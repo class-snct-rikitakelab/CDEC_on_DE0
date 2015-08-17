@@ -40,16 +40,20 @@ module CDEC8_DP (
     wire [2:0] alu_szcy;
 
   //-- ALU function include
-    `include "ALU_func.v"
+    //`include "ALU_func.v"
 
   //-- 3-state buffer function include
     `include "tbuf_func.v"
 
+  //-- pullup buffer function include
+    `include "pullup_buffer_func.v"
+    
   //-- control signal re-assign
     assign {mmrw, fwr, rwr, xdst, aluop, xsrc} = ctrl; // CTRL
 
   //-- ALU/FLAG connection
-    assign {alu_szcy,  alu_out} = ALU(XBUS, T, FLG[1], aluop);	// ALU
+    alu alu(.x(XBUS), .t(T), .cy(FLG[1]), .alu_op(aluop), .alu_flag(alu_szcy), .alu_result(alu_out));
+    //assign {alu_szcy,  alu_out} = ALU(XBUS, T, FLG[1], aluop);	// ALU
     assign SZCy = FLG[3:1];
  
   //-- memory bus
@@ -67,7 +71,8 @@ module CDEC8_DP (
     assign XBUS = TBUF8_func(xsrc==3'b100, R  );	// R
     assign XBUS = TBUF8_func(xsrc==3'b101, RDR);	// RDR
     assign XBUS = TBUF8_func(xsrc==3'b110, FLG);	// FLG
-
+    // otherwise pullup
+    assign XBUS = pullup_buffer_func(xsrc==3'b111);
     //PULLUP PXBUS[7:0] (.O(XBUS[7:0]));			// pull up of XBUS
 
   //-- register instantiation
