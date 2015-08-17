@@ -68,11 +68,11 @@ module CDEC8_DP (
     assign XBUS = TBUF8_func(xsrc==3'b101, RDR);	// RDR
     assign XBUS = TBUF8_func(xsrc==3'b110, FLG);	// FLG
 
-    PULLUP PXBUS[7:0] (.O(XBUS[7:0]));			// pull up of XBUS
+    //PULLUP PXBUS[7:0] (.O(XBUS[7:0]));			// pull up of XBUS
 
   //-- register instantiation
     reg8_per PC_reg  (clock, (xdst==3'b000), XBUS,          PC, reset_N); // PC
-    reg8_pe #(8) A_reg   (clock, (xdst==3'b001), XBUS,          A          ); // A
+    reg8_pe  A_reg   (clock, (xdst==3'b001), XBUS,          A          ); // A
     reg8_pe  B_reg   (clock, (xdst==3'b010), XBUS,          B          ); // B
     reg8_pe  C_reg   (clock, (xdst==3'b011), XBUS,          C          ); // C
     reg8_ll  I_reg   (clock, (xdst==3'b111), XBUS,          I          ); // I

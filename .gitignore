@@ -4,3 +4,11 @@ vsim.wlf
 *.bak
 *.mti
 *.mpf
+db/
+incremental_db/
+output_files/
+simulation/
+*.ipinfo
+*.qpf
+*.qsf
+*_description.txt
