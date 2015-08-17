@@ -12,4 +12,5 @@ simulation/
 *.qpf
 *.qsf
 *_description.txt
+*.qws
 *.stackdump
