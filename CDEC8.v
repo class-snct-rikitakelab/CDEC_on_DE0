@@ -35,13 +35,13 @@ module CDEC8(
         clock, reset_N,
         adrs, data_in, data_out,
         I, SZCy, ctrl,
-        resad, resdt, LEDresad, LEDresdt);
+        resad, resdt);
 
     CDEC8_PLA_ctrl CDEC8_PLA_ctrl (
         clock, reset_N,
         I, SZCy, ctrl,
         mmrd_N,  mmwr_N, mm_dboe,
-        resad, resdt, LEDresad, LEDresdt);
+        resad, resdt);
     
   //-- execution clock counter
 
