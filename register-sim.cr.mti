@@ -1,0 +1,16 @@
+D:/cygwin/home/yoshiaki/devel/CDEC_Verilog_Model/register.v {1 {vlog -work work D:/cygwin/home/yoshiaki/devel/CDEC_Verilog_Model/register.v
+Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+-- Compiling module reg8_pe
+-- Compiling module reg8_per
+-- Compiling module reg8_ner
+-- Compiling module reg8_ll
+-- Compiling module reg8_hl
+
+Top level modules:
+	reg8_pe
+	reg8_per
+	reg8_ner
+	reg8_ll
+	reg8_hl
+
+} {} {}}
