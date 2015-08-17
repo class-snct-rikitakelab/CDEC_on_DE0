@@ -22,9 +22,6 @@ module CDEC8_DP (
 
     input  wire [ 7:0] resad,	// resource address for PC debug monitor
     output wire [ 7:0] resdt//,	// resource data    for PC debug monitor
-
-    //input  wire [ 7:0] LEDresad,	// resource address for LED signal display board
-    //output wire [ 7:0] LEDresdt       // resource data    for LED signal display board
     );
 
 
@@ -40,8 +37,6 @@ module CDEC8_DP (
     wire [7:0] alu_out;
     wire [2:0] alu_szcy;
 
-  //-- ALU function include
-    //`include "ALU_func.v"
 
   //-- 3-state buffer function include
     `include "tbuf_func.v"
@@ -65,16 +60,17 @@ module CDEC8_DP (
     assign data_out = WDR;			// WDR to external connection
 
   //-- XBUS connection
-    assign XBUS = TBUF8_func(xsrc==3'b000, PC );	// PC
-    assign XBUS = TBUF8_func(xsrc==3'b001, A  );	// A
-    assign XBUS = TBUF8_func(xsrc==3'b010, B  );	// B
-    assign XBUS = TBUF8_func(xsrc==3'b011, C  );	// C
-    assign XBUS = TBUF8_func(xsrc==3'b100, R  );	// R
-    assign XBUS = TBUF8_func(xsrc==3'b101, RDR);	// RDR
-    assign XBUS = TBUF8_func(xsrc==3'b110, FLG);	// FLG
-    // otherwise pullup
-    assign XBUS = pullup_buffer_func(xsrc==3'b111);
-    //PULLUP PXBUS[7:0] (.O(XBUS[7:0]));			// pull up of XBUS
+    assign XBUS = select_src(xsrc);
+    // assign XBUS = TBUF8_func(xsrc==3'b000, PC );	// PC
+    // assign XBUS = TBUF8_func(xsrc==3'b001, A  );	// A
+    // assign XBUS = TBUF8_func(xsrc==3'b010, B  );	// B
+    // assign XBUS = TBUF8_func(xsrc==3'b011, C  );	// C
+    // assign XBUS = TBUF8_func(xsrc==3'b100, R  );	// R
+    // assign XBUS = TBUF8_func(xsrc==3'b101, RDR);	// RDR
+    // assign XBUS = TBUF8_func(xsrc==3'b110, FLG);	// FLG
+    // // otherwise pullup
+    // assign XBUS = pullup_buffer_func(xsrc==3'b111);
+    // //PULLUP PXBUS[7:0] (.O(XBUS[7:0]));			// pull up of XBUS
 
   //-- register instantiation
     reg8_per PC_reg  (clock, (xdst==3'b000), XBUS,          PC, reset_N); // PC
@@ -105,22 +101,20 @@ module CDEC8_DP (
 //  assign resdt    = (   resad==8'h0C) ? signal  : 8'hZZ;	// external
     assign resdt    = (   resad==8'h0D) ? FLG     : 8'hZZ;
 
-  //-- internal hardware resource singnal observation bus for LED display board
-    // assign LEDresdt = (LEDresad==8'h00) ? PC      : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h01) ? I       : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h02) ? T       : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h03) ? R       : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h04) ? MAR     : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h05) ? data_in : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h06) ? RDR     : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h07) ? WDR     : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h08) ? A       : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h09) ? B       : 8'hZZ;
-    // assign LEDresdt = (LEDresad==8'h0A) ? C       : 8'hZZ;
-//                    (LEDresad==8'h0B) ? state   : 8'hZZ;	// external
-//                    (LEDresad==8'h0C) ? signal  : 8'hZZ;	// external
-    // assign LEDresdt = (LEDresad==8'h0D) ? FLG     : 8'hZZ;
-//  assign LEDresdt = (LEDresad==8'h0E) ? CLKCOUNT_H : 8'hZZ;	// external
-//  assign LEDresdt = (LEDresad==8'h0F) ? CLKCOUNT_L : 8'hZZ;	// external
+    function [7:0] select_src;
+        input [2:0] src;
+        begin
+            case(src)
+               3'b000 : select_src = PC;
+               3'b001 : select_src = A;
+               3'b010 : select_src = B;
+               3'b011 : select_src = C;
+               3'b100 : select_src = R;
+               3'b101 : select_src = RDR;
+               3'b110 : select_src = FLG;
+               default : select_src = 8'b1111_1111;
+            endcase            
+        end
+    endfunction
 
 endmodule

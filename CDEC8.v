@@ -20,10 +20,8 @@ module CDEC8(
     output       mm_dboe,
 
     input  [7:0] resad,
-    output [7:0] resdt, 
-    input  [7:0] LEDresad, 
-    output [7:0] LEDresdt);
-
+    output [7:0] resdt);
+	 
     wire [ 2:0] SZCy;
     wire [ 7:0] I;
     wire [14:0] ctrl;
@@ -65,7 +63,7 @@ module CDEC8(
         end
     end
 
-    assign LEDresdt = (LEDresad==8'h0E) ? clock_count[15:8] : 8'hZZ;
-    assign LEDresdt = (LEDresad==8'h0F) ? clock_count[ 7:0] : 8'hZZ;
+    //assign LEDresdt = (LEDresad==8'h0E) ? clock_count[15:8] : 8'hZZ;
+    //assign LEDresdt = (LEDresad==8'h0F) ? clock_count[ 7:0] : 8'hZZ;
 
 endmodule

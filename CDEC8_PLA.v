@@ -25,9 +25,7 @@ module CDEC8_PLA_ctrl(
     output wire        mm_dboe,
 
     input  wire [ 7:0] resad,
-    output wire [ 7:0] resdt//,
-    //input  wire [ 7:0] LEDresad,
-    //output wire [ 7:0] LEDresdt
+    output wire [ 7:0] resdt
     );
     
     wire   [ 1:0] mmrw;
@@ -116,7 +114,6 @@ module CDEC8_PLA_ctrl(
 
   //-- internal hardware resource singnal observation bus for debug monitor
     assign resdt    = (resad   ==8'h0B)? {endseq, 3'b000, state}: 8'hZZ;
-    //assign LEDresdt = (LEDresad==8'h0B)? {endseq, 3'b000, state}: 8'hZZ;
 
   //-- PLA 
     assign {endseq, ctrl} = PLA(state, I, SZCy);
