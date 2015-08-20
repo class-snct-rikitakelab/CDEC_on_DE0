@@ -12,6 +12,8 @@
     footer file : CDEC8_PLA_ftr.v
 */
 
+`default_nettype none
+
 module CDEC8_PLA_ctrl(
     input  wire	       clock,
     input  wire	       reset_N,

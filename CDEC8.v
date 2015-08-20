@@ -8,20 +8,20 @@
 `include "my_const.vh"
 
 module CDEC8(
-    input         clock,
-    input         reset_N,
+    input wire        clock,
+    input wire        reset_N,
 
-    output [7:0] adrs,
-    input  [7:0] data_in,
-    output [7:0] data_out,
-    output       mmwr_en,
+    output wire [7:0] adrs,
+    input  wire [7:0] data_in,
+    output wire [7:0] data_out,
+    output wire      mmwr_en,
 
     //output       mmrd_N, 
     //output       mmwr_N, 
     //output       mm_dboe,
 
-    input  [7:0] resad,
-    output [7:0] resdt);
+    input  wire [7:0] resad,
+    output wire [7:0] resdt);
 	 
     wire [ 2:0] SZCy;
     wire [ 7:0] I;

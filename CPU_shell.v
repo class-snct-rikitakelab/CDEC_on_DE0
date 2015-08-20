@@ -4,7 +4,7 @@
  ****									   **
  ***** (C) 2014 kimsyn (ET & VLSI system design labo. GCT ICE)  = = = = = = */
 
-`default_nettype none
+`default_nettype none 
 `include "my_const.vh"
 
 module CPU_shell(
