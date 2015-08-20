@@ -20,15 +20,10 @@ module CDEC8_PLA_ctrl(
     
     output wire [14:0] ctrl,
     
-    output wire        mmrd_N,
-    output wire        mmwr_N,
-    output wire        mm_dboe,
-
     input  wire [ 7:0] resad,
     output wire [ 7:0] resdt
     );
     
-    wire   [ 1:0] mmrw;
     wire 	  endseq;
     reg	   [ 3:0] state;
 
@@ -127,11 +122,6 @@ module CDEC8_PLA_ctrl(
     	end
     end
     
-  //-- memory access control signals
-    assign mmrw     = ctrl[14:13];
-    assign mmrd_N   = ~(mmrw == 2'b10   );	// memory read (active low)
-    assign mm_dboe  =  (mmrw == 2'b01   );	// memory data bus output enable
-    assign mmwr_N   = ~(mm_dboe & ~clock);	// memory write (active low)
 
 endmodule
 

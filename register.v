@@ -75,7 +75,7 @@ module reg8_ll(
     input      [7:0] in,
     output reg [7:0] out);
 
-    always @(clock, wr_en, in) begin
+   always @(clock, wr_en, in) begin
 	if(~clock) begin
 	    if(wr_en) begin
 		out <= in;

@@ -41,8 +41,6 @@ module CDEC8_DP (
   //-- 3-state buffer function include
     `include "tbuf_func.v"
 
-  //-- pullup buffer function include
-    `include "pullup_buffer_func.v"
 
   //-- control signal re-assign
     assign {mmrw, fwr, rwr, xdst, aluop, xsrc} = ctrl; // CTRL

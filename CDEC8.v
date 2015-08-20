@@ -14,10 +14,11 @@ module CDEC8(
     output [7:0] adrs,
     input  [7:0] data_in,
     output [7:0] data_out,
+    output       mmwr_en,
 
-    output       mmrd_N, 
-    output       mmwr_N, 
-    output       mm_dboe,
+    //output       mmrd_N, 
+    //output       mmwr_N, 
+    //output       mm_dboe,
 
     input  [7:0] resad,
     output [7:0] resdt);
@@ -26,8 +27,10 @@ module CDEC8(
     wire [ 7:0] I;
     wire [14:0] ctrl;
 
-    reg  [15:0] clock_count;
-    reg         clk_count_en;
+    wire   [ 1:0] mmrw;
+
+    // reg  [15:0] clock_count;
+    // reg         clk_count_en;
 
     CDEC8_DP CDEC8_DP ( 
         clock, reset_N,
@@ -38,32 +41,13 @@ module CDEC8(
     CDEC8_PLA_ctrl CDEC8_PLA_ctrl (
         clock, reset_N,
         I, SZCy, ctrl,
-        mmrd_N,  mmwr_N, mm_dboe,
         resad, resdt);
-    
-  //-- execution clock counter
 
-    always @(negedge clock, negedge reset_N) begin
-        if(~reset_N) begin
-            clk_count_en <= `OFF;
-        end else if(ctrl[7:3]==5'b00110) begin
-            clk_count_en <= `OFF;
-        end else if(ctrl[7:3]==5'b00101) begin
-            clk_count_en <= `ON;
-        end
-    end
-
-    always @(posedge clock, negedge reset_N) begin
-        if(~reset_N) begin
-            clock_count <= 16'h0000;
-        end else if(ctrl[7:3]==5'b00100) begin
-            clock_count <= 16'h0000;
-        end else if(clk_count_en) begin
-            clock_count <= clock_count + 1;
-        end
-    end
-
-    //assign LEDresdt = (LEDresad==8'h0E) ? clock_count[15:8] : 8'hZZ;
-    //assign LEDresdt = (LEDresad==8'h0F) ? clock_count[ 7:0] : 8'hZZ;
+  //-- memory access control signals
+    assign mmrw     = ctrl[14:13];
+    assign mmwr_en  = (mmrw == 2'b01);
+    //assign mmrd_N   = ~(mmrw == 2'b10   );   // memory read (active low)
+    //assign mm_dboe  =  (mmrw == 2'b01   );   // memory data bus output enable
+    //assign mmwr_N   = ~(mm_dboe & ~clock);   // memory write (active low)
 
 endmodule

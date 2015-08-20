@@ -25,12 +25,12 @@ module alu(
 				5'b00001: rslt = {1'b0, X};		// pass X
 				5'b00010: rslt = {1'b0, T};		// pass T
 				5'b01000: rslt = X + T;			// X + T
-				5'b01001: rslt = X + T + 1;		// X + T + 1
+				5'b01001: rslt = X + T + 8'h01;		// X + T + 1
 				5'b01010: rslt = X + T + Cy;		// X + T + Cy
 				5'b01011: rslt = X + (~T & 8'hFF) + 8'h01;	    // X - T      => X +~T + 1
 				5'b01100: rslt = X + (~T & 8'hFF);		    // X - T - 1  => X +~T
 				5'b01101: rslt = X + (~T & 8'hFF) + (7'h00 + ~Cy);  // X - T - Cy => X +~T + ~Cy 
-				5'b01110: rslt = X + 1;			// inc X
+				5'b01110: rslt = X + 8'h01;			// inc X
 				5'b01111: rslt = X + 8'hFF;		// dec X
 				5'b10000: rslt = {1'b0, X & T};		// X and T
 				5'b10001: rslt = {1'b0, X | T};		// X or T
