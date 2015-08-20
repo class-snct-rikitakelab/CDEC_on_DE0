@@ -20,4 +20,18 @@ module ram(
 
 	assign q = ram[adrs_reg];
 
+	// for testbench
+	integer i;
+	initial begin
+		ram[8'h00] = 8'h01; // LD THREE, A
+		ram[8'h01] = 8'h07;
+		ram[8'h02] = 8'h06; // MOV A, B
+		ram[8'h03] = 8'h22; // ADD B
+		ram[8'h04] = 8'h41; // INC A
+		ram[8'h05] = 8'hc0; // JMP 05
+		ram[8'h06] = 8'h05;
+		ram[8'h07] = 8'h03; // Label: THREE
+		for(i=0; i<256; i=i+1)
+			ram[i] = 8'h00;
+	end
 endmodule
