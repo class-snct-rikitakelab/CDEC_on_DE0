@@ -12,7 +12,8 @@ module CPU_shell(
     input  wire        reset_N,	// reset (active low)
 
     input  wire [ 7:0] resad,	    // resource address for debug monitor
-    output wire [ 7:0] resdt	    // resource data for debug monitor
+    output wire [ 7:0] resdt,	    // resource data for debug monitor
+    output wire check_clock
     );
 
     wire [7:0] data_in;
@@ -30,10 +31,14 @@ module CPU_shell(
 
 
   //-- memory/io signal connection
-    ram ram(.adrs(adrs), .data(data_out), .q(data_in), 
+    // fake implementaion by rom instead of ram
+    rom rom(.adrs(adrs), .data(data_out), .q(data_in), 
         .clock(clock), .wr_en(mmwr_en));
+    // ram ram(.adrs(adrs), .data(data_out), .q(data_in), 
+    //     .clock(clock), .wr_en(mmwr_en));
 
-
+    //
+    assign check_clock = clock;
 
 endmodule
 
