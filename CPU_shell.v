@@ -30,10 +30,11 @@ module CPU_shell(
 
 
   //-- memory/io signal connection
-    ram ram(.adrs(adrs), .data(data_out), .q(data_in), 
+    // fake implementaion by rom instead of ram
+    rom rom(.adrs(adrs), .data(data_out), .q(data_in), 
         .clock(clock), .wr_en(mmwr_en));
-
-
+    // ram ram(.adrs(adrs), .data(data_out), .q(data_in), 
+    //     .clock(clock), .wr_en(mmwr_en));
 
 endmodule
 
