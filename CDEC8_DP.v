@@ -40,9 +40,8 @@ module CDEC8_DP (
 
   //-- 3-state buffer function include
     `include "tbuf_func.v"
+  //  `include "ALU_func.v"
 
-  //-- pullup buffer function include
-    `include "pullup_buffer_func.v"
 
   //-- control signal re-assign
     assign {mmrw, fwr, rwr, xdst, aluop, xsrc} = ctrl; // CTRL
@@ -60,16 +59,33 @@ module CDEC8_DP (
     assign data_out = WDR;			// WDR to external connection
 
   //-- XBUS connection
-    assign XBUS = select_src(xsrc);
-    // assign XBUS = TBUF8_func(xsrc==3'b000, PC );	// PC
-    // assign XBUS = TBUF8_func(xsrc==3'b001, A  );	// A
-    // assign XBUS = TBUF8_func(xsrc==3'b010, B  );	// B
-    // assign XBUS = TBUF8_func(xsrc==3'b011, C  );	// C
-    // assign XBUS = TBUF8_func(xsrc==3'b100, R  );	// R
-    // assign XBUS = TBUF8_func(xsrc==3'b101, RDR);	// RDR
-    // assign XBUS = TBUF8_func(xsrc==3'b110, FLG);	// FLG
+    function [7:0] select_src;
+        input [2:0] src;
+        input [7:0] w0, w1, w2, w3, w4, w5, w6, w7;
+        begin
+            case(src)
+               3'b000 : select_src = w0;
+               3'b001 : select_src = w1;
+               3'b010 : select_src = w2;
+               3'b011 : select_src = w3;
+               3'b100 : select_src = w4;
+               3'b101 : select_src = w5;
+               3'b110 : select_src = w6;
+               default : select_src = w7;
+            endcase            
+        end
+    endfunction
+
+    assign XBUS = select_src(xsrc, PC, A, B, C, R, RDR, FLG, 8'hff);
+    //assign XBUS = TBUF8_func(xsrc==3'b000, PC );	// PC
+    //assign XBUS = TBUF8_func(xsrc==3'b001, A  );	// A
+    //assign XBUS = TBUF8_func(xsrc==3'b010, B  );	// B
+    //assign XBUS = TBUF8_func(xsrc==3'b011, C  );	// C
+    //assign XBUS = TBUF8_func(xsrc==3'b100, R  );	// R
+    //assign XBUS = TBUF8_func(xsrc==3'b101, RDR);	// RDR
+    //assign XBUS = TBUF8_func(xsrc==3'b110, FLG);	// FLG
     // // otherwise pullup
-    // assign XBUS = pullup_buffer_func(xsrc==3'b111);
+    //assign XBUS = (xsrc==3'b111) ? 8'hff : 8'hzz;
     // //PULLUP PXBUS[7:0] (.O(XBUS[7:0]));			// pull up of XBUS
 
   //-- register instantiation
@@ -101,20 +117,5 @@ module CDEC8_DP (
 //  assign resdt    = (   resad==8'h0C) ? signal  : 8'hZZ;	// external
     assign resdt    = (   resad==8'h0D) ? FLG     : 8'hZZ;
 
-    function [7:0] select_src;
-        input [2:0] src;
-        begin
-            case(src)
-               3'b000 : select_src = PC;
-               3'b001 : select_src = A;
-               3'b010 : select_src = B;
-               3'b011 : select_src = C;
-               3'b100 : select_src = R;
-               3'b101 : select_src = RDR;
-               3'b110 : select_src = FLG;
-               default : select_src = 8'b1111_1111;
-            endcase            
-        end
-    endfunction
 
 endmodule
