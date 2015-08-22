@@ -4,11 +4,18 @@
 module cpu_shell_sim; 
   reg clock;
   reg reset_N;
-  reg [7:0] resad;
-  wire [7:0] resdt;
-  
+
+  wire clocklevel;
+  wire endseq;
+
+  reg [1:0] ressel;
+  wire [7:0] resdt_h;
+  wire [7:0] resdt_l;
+
   CPU_shell sut_cpu(.clock(clock), .reset_N(reset_N), 
-    .resad(resad), .resdt(resdt));
+    .clocklevel(clocklevel), .endseq(endseq),
+    .ressel(ressel), 
+    .resdt_h(resdt_h), .resdt_l(resdt_l));
 
   initial begin
     clock = 0;
@@ -17,7 +24,7 @@ module cpu_shell_sim;
   
   initial begin
     reset_N = 1;
-    resad = 8'h08; // Areg
+    ressel = 2'b1; // Areg
     #3;
     reset_N = 0;
     #4;
