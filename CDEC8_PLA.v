@@ -21,12 +21,13 @@ module CDEC8_PLA_ctrl(
     input  wire [ 2:0] SZCy,
     
     output wire [14:0] ctrl,
+    output wire endseq,
     
     input  wire [ 7:0] resad,
     output wire [ 7:0] resdt
     );
     
-    wire 	  endseq;
+    //wire 	  endseq;
     reg	   [ 3:0] state;
 
   //-- PLA function
