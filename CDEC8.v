@@ -16,21 +16,16 @@ module CDEC8(
     output wire [7:0] data_out,
     output wire      mmwr_en,
 
-    //output       mmrd_N, 
-    //output       mmwr_N, 
-    //output       mm_dboe,
     output wire endseq,
     input  wire [7:0] resad,
     output wire [7:0] resdt);
 	 
     wire [ 2:0] SZCy;
     wire [ 7:0] I;
-    wire [14:0] ctrl;
+    wire [16:0] ctrl;
 
     wire   [ 1:0] mmrw;
 
-    // reg  [15:0] clock_count;
-    // reg         clk_count_en;
 
     CDEC8_DP CDEC8_DP ( 
         clock, reset_N,
@@ -45,10 +40,7 @@ module CDEC8(
         resad, resdt);
 
   //-- memory access control signals
-    assign mmrw     = ctrl[14:13];
+    assign mmrw     = ctrl[16:15];
     assign mmwr_en  = (mmrw == 2'b01);
-    //assign mmrd_N   = ~(mmrw == 2'b10   );   // memory read (active low)
-    //assign mm_dboe  =  (mmrw == 2'b01   );   // memory data bus output enable
-    //assign mmwr_N   = ~(mm_dboe & ~clock);   // memory write (active low)
 
 endmodule
