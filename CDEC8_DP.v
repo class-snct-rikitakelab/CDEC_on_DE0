@@ -116,6 +116,7 @@ module CDEC8_DP (
 //  assign resdt    = (   resad==8'h0B) ? state   : 8'hZZ;	// external
 //  assign resdt    = (   resad==8'h0C) ? signal  : 8'hZZ;	// external
     assign resdt    = (   resad==8'h0D) ? FLG     : 8'hZZ;
+    assign resdt    = (   resad==8'h0E) ? XBUS    : 8'hzz;
 
 
 endmodule

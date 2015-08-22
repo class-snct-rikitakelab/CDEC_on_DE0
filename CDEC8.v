@@ -19,7 +19,7 @@ module CDEC8(
     //output       mmrd_N, 
     //output       mmwr_N, 
     //output       mm_dboe,
-
+    output wire endseq,
     input  wire [7:0] resad,
     output wire [7:0] resdt);
 	 
@@ -41,6 +41,7 @@ module CDEC8(
     CDEC8_PLA_ctrl CDEC8_PLA_ctrl (
         clock, reset_N,
         I, SZCy, ctrl,
+        endseq,
         resad, resdt);
 
   //-- memory access control signals
