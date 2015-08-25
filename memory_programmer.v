@@ -10,7 +10,7 @@ module memory_programmer(
   output wire       wr_en_out,
   output wire [7:0] address_out,
   output wire [7:0] data_out
-	);
+  );
 
   reg [7:0] address_counter;
 
@@ -20,7 +20,7 @@ module memory_programmer(
   assign data_out = data_in;
 
 
-  always @(posgedge clock_in or negedge reset_N) begin
+  always @(posedge clock_in or negedge reset_N) begin
     if (reset_N == 0) begin
       address_counter <= 8'h00;      
     end
