@@ -25,6 +25,9 @@ module sseg_dec(
 				4'hb : dec = 8'b01111100;
 				4'hc : dec = 8'b01011000;
 				4'hd : dec = 8'b01011110;
+				4'he : dec = 8'b01111001;
+				4'hf : dec = 8'b01110001;
+				default: dec = 8'b10000000;
 			endcase
 		end
 	endfunction

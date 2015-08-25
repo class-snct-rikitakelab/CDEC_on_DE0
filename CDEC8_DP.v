@@ -11,15 +11,23 @@ module CDEC8_DP (
     input  wire        clock,
     input  wire        reset_N,
 
+    // io port
+    input  wire [7:0] io_in,  // input port 
+    output wire [7:0] io_out, // output port
+
+    // memory
     output wire [ 7:0] adrs,
     input  wire [ 7:0] data_in,
     output wire [ 7:0] data_out,
 
+    // to control unit
     output wire [ 7:0] I,
     output wire [ 2:0] SZCy,
 
+    // from control unit
     input  wire [16:0] ctrl,
 
+    // debug monitor
     input  wire [ 7:0] resad,	// resource address for PC debug monitor
     output wire [ 7:0] resdt//,	// resource data    for PC debug monitor
     );
@@ -34,6 +42,7 @@ module CDEC8_DP (
 
     wire [7:0] XBUS;
     wire [7:0] PC, A, B, C, T, R, MAR, RDR, WDR, FLG;
+    wire [7:0] IPORT;
     wire [7:0] alu_out;
     wire [2:0] alu_szcy;
 
@@ -61,7 +70,7 @@ module CDEC8_DP (
   //-- XBUS connection
     function [7:0] select_src;
         input [3:0] src;
-        input [7:0] w0, w1, w2, w3, w4, w5, w6, w7;
+        input [7:0] w0, w1, w2, w3, w4, w5, w6, w7, w8;
         begin
             case(src)
                4'b0000 : select_src = w0;
@@ -71,12 +80,13 @@ module CDEC8_DP (
                4'b0100 : select_src = w4;
                4'b0101 : select_src = w5;
                4'b0110 : select_src = w6;
-               default : select_src = w7;
+               4'b1000 : select_src = w7;
+               default : select_src = w8;
             endcase            
         end
     endfunction
 
-    assign XBUS = select_src(xsrc, PC, A, B, C, R, RDR, FLG, 8'hff);
+    assign XBUS = select_src(xsrc, PC, A, B, C, R, RDR, FLG, IPORT, 8'hff);
     //assign XBUS = TBUF8_func(xsrc==3'b000, PC );	// PC
     //assign XBUS = TBUF8_func(xsrc==3'b001, A  );	// A
     //assign XBUS = TBUF8_func(xsrc==3'b010, B  );	// B
@@ -100,6 +110,8 @@ module CDEC8_DP (
     reg8_pe  RDR_reg (clock, (mmrw==2'b10 ), data_in,       RDR        ); // RDR
     reg8_pe  R_reg   (clock, (rwr),          alu_out,       R          ); // R
     reg8_pe  FLG_reg (clock, (fwr), {4'h0, alu_szcy, 1'b0}, FLG        ); // FLG
+    reg8_ll  IPORT_reg(clock, (1'b1), io_in, IPORT);          // IPORT
+    reg8_pe  OPORT_reg(clock, (xdst==4'b1000), XBUS, io_out); // OPORT
 
   //-- internal hardware resource singnal observation bus for debug monitor
     assign resdt    = (   resad==8'h00) ? PC      : 8'hZZ;
@@ -117,6 +129,6 @@ module CDEC8_DP (
 //  assign resdt    = (   resad==8'h0C) ? signal  : 8'hZZ;	// external
     assign resdt    = (   resad==8'h0D) ? FLG     : 8'hZZ;
     assign resdt    = (   resad==8'h0E) ? XBUS    : 8'hzz;
-
+    assign resdt    = (   resad==8'h0F) ? IPORT   : 8'hzz;
 
 endmodule

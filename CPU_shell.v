@@ -11,11 +11,14 @@ module CPU_shell(
     input  wire        clock,	// clock
     input  wire        reset_N,	// reset (active low)
 
+    input wire  [7:0] io_in,  // input port
+    output wire [7:0] io_out, // output port
+
     output wire clocklevel,
     output wire endseq,
 
     input  wire [ 1:0] ressel,       // resource selector for debug monitor
-    output wire [ 7:0] resdt_h,       // resource data for debug monitor
+    output wire [ 7:0] resdt_h,      // resource data for debug monitor (hex)
     output wire [ 7:0] resdt_l
     );
 
@@ -51,10 +54,11 @@ module CPU_shell(
   //-- CPU core instantiation and bus connection
 
     CDEC8 CDEC8( clock, reset_N,
-		 adrs[7:0], data_in[7:0], data_out[7:0], mmwr_en,
-         //mmrd_N, mmwr_N, mm_dboe,
-         endseq,
-		 resad, resdt);
+        io_in, io_out,
+		adrs[7:0], data_in[7:0], data_out[7:0], mmwr_en,
+        //mmrd_N, mmwr_N, mm_dboe,
+        endseq,
+		resad, resdt);
 
   //-- memory/io signal connection
     // fake implementaion by rom instead of ram

@@ -11,6 +11,9 @@ module CDEC8(
     input wire        clock,
     input wire        reset_N,
 
+    input wire  [7:0] io_in,
+    output wire [7:0] io_out,
+
     output wire [7:0] adrs,
     input  wire [7:0] data_in,
     output wire [7:0] data_out,
@@ -29,6 +32,7 @@ module CDEC8(
 
     CDEC8_DP CDEC8_DP ( 
         clock, reset_N,
+        io_in, io_out,
         adrs, data_in, data_out,
         I, SZCy, ctrl,
         resad, resdt);
