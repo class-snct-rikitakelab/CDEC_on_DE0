@@ -1,5 +1,6 @@
 # CEDC on DE0
-
+ 
+ - [CDEC on DE0 project page](http://rikitoro.github.io/CDEC_on_DE0/)
 
 ## CDEC とは
 
