@@ -22,6 +22,21 @@ module reg8_pe(
     end
 endmodule
 
+//--------------------------------------------------------------------
+// 8-bit negative edge trigger type
+
+module reg8_ne(
+    input wire           clock,
+    input wire           wr_en,
+    input wire     [7:0] in,
+    output reg [7:0] out);
+
+    always @(negedge clock) begin
+    if(wr_en) begin
+        out <= in;
+    end
+    end
+endmodule
 
 //--------------------------------------------------------------------
 // 8-bit positive edge trigger type with async. reset
