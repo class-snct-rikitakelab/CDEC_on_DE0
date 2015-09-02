@@ -124,7 +124,7 @@ module CDEC8_PLA_ctrl(
     	if(~reset_N) begin
     	    state <= 4'b0000;
     	end else begin
-    	    state <= (endseq) ? 4'b0000 : state + 1;
+    	    state <= (endseq) ? 4'b0000 : state + 1'b1;
     	end
     end
     

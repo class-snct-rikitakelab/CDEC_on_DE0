@@ -8,25 +8,51 @@
 `include "my_const.vh"
 
 module CPU_shell(
-    input  wire        clock,	// clock
-    input  wire        reset_N,	// reset (active low)
-    input  wire        p_clock, // clock for programming
-
-    input wire  [7:0] io_in,  // input port
-    output wire [7:0] io_out, // output port
-
-    output wire clocklevel,
-    output wire endseq,
-
-    input  wire [1:0] select_sw,       // resource selector for debug monitor
-    output wire [7:0] ssled3,      // resource data for debug monitor (hex)
-    output wire [7:0] ssled2,
-    output wire [7:0] ssled1,
-    output wire [7:0] ssled0
+    input wire  [2:0]   BUTTON,     // push buttons: {p_clock, reset_N, clock}
+    input wire  [9:0]   SW,         // slide switches: {mode, select_sw, io_in}
+    output wire [9:0]   LEDG,       // LED Green: {clocklevel, endseq, io_out}
+    output wire [6:0]   HEX0_D,     // 7seg digit 0
+    output wire         HEX0_DP,    // 7seg dp 0
+    output wire [6:0]   HEX1_D,     // 7seg digit 1
+    output wire         HEX1_DP,    // 7seg dp 1
+    output wire [6:0]   HEX2_D,     // 7seg digit 2
+    output wire         HEX2_DP,    // 7seg dp 2
+    output wire [6:0]   HEX3_D,     // 7seg digit 3
+    output wire         HEX3_DP    // 7seg dp 3
     );
     
-    // mode == 1 : program mode
-    // mode == 0 : run mode 
+    wire clock;      // clock
+    wire reset_N;    // reset (active low)
+    wire p_clock;    // clock signal for programming
+
+    wire [1:0]  select_sw;  // resource selector for debug monitor
+    wire [7:0]  io_in;      // INPUT PORT (8-bit SW)
+
+    wire clocklevel;        // clock level
+    wire endseq;            // end seqence    
+    wire [7:0] io_out;      // OUTPUT PORT (8-bit LED)
+
+    wire [7:0] ssled3;      // resource data for debug monitor (hex)
+    wire [7:0] ssled2;
+    wire [7:0] ssled1;
+    wire [7:0] ssled0;
+
+    assign clock    = BUTTON[2];
+    assign reset_N  = BUTTON[1];
+    assign p_clock  = BUTTON[0];
+
+    assign {select_sw, io_in} = SW;
+
+    assign LEDG = {clocklevel, endseq, io_out};
+
+    assign {HEX0_DP, HEX0_D} = ssled0;
+    assign {HEX1_DP, HEX1_D} = ssled1;
+    assign {HEX2_DP, HEX2_D} = ssled2;
+    assign {HEX3_DP, HEX3_D} = ssled3;
+
+    // program/run mode selector
+    // mode == 1 => program mode
+    // mode == 0 => run mode
     wire        mode;
 
     // memory_programmer -> memory
@@ -56,7 +82,7 @@ module CPU_shell(
     sseg_dec sseg0(.data(mode ? prog_data[3:0] : resdt[3:0]), .led(ssled0));
    
    // memory programmer
-   memory_programmer(.clock_in(p_clock), .reset_N(reset_N),
+   memory_programmer programmer(.clock_in(~p_clock), .reset_N(reset_N),
     .data_in(io_in), .clock_out(prog_clock), .wr_en_out(prog_wr_en),
     .address_out(prog_adrs), .data_out(prog_data));
 
@@ -85,7 +111,7 @@ module CPU_shell(
 		resad, resdt);
 
   //-- memory/io signal connection
-    ram ram(
+    memory ram(
         .adrs(mode ? prog_adrs : adrs), 
         .data(mode ? prog_data : data_out), 
         .q(data_in), 
