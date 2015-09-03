@@ -11,14 +11,15 @@ module memory(
 
 	reg [7:0] ram[255:0];
 
-	// reg [7:0] adrs_reg;
+	reg [7:0] adrs_reg;
+
 	assign q = ram[adrs];
 
 	always @(posedge clock) begin
 		if (wr_en) begin
 			ram[adrs] <= data;
 		end
-		//adrs_reg <= adrs;
+		adrs_reg <= adrs;
 	end
 
 	//assign q = ram[adrs_reg];

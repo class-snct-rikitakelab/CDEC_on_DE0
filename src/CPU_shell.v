@@ -8,7 +8,7 @@
 `include "my_const.vh"
 
 module CPU_shell(
-    input wire  [2:0]   BUTTON,     // push buttons: {p_clock, reset_N, clock}
+    input wire  [2:0]   BUTTON,     // push buttons: {clock, reset_N, p_clock}
     input wire  [9:0]   SW,         // slide switches: {mode, select_sw, io_in}
     output wire [9:0]   LEDG,       // LED Green: {clocklevel, endseq, io_out}
     output wire [6:0]   HEX0_D,     // 7seg digit 0
@@ -37,9 +37,7 @@ module CPU_shell(
     wire [7:0] ssled1;
     wire [7:0] ssled0;
 
-    assign clock    = BUTTON[2];
-    assign reset_N  = BUTTON[1];
-    assign p_clock  = BUTTON[0];
+    assign {clock, reset_N, p_clock} = BUTTON;
 
     assign {select_sw, io_in} = SW;
 

@@ -64,8 +64,6 @@ module CDEC8_DP (
     assign adrs     = MAR;
     assign data_out = WDR;
 
-  //-- data bus output connection
-    assign data_out = WDR;			// WDR to external connection
 
   //-- XBUS connection
     function [7:0] select_src;
