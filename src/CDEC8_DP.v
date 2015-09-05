@@ -72,14 +72,14 @@ module CDEC8_DP (
   reg8_pe  A_reg   (clock, (xdst == 4'b0001), XBUS,       A          ); // A
   reg8_pe  B_reg   (clock, (xdst == 4'b0010), XBUS,       B          ); // B
   reg8_pe  C_reg   (clock, (xdst == 4'b0011), XBUS,       C          ); // C
-  reg8_ll  I_reg   (clock, (xdst == 4'b0111), XBUS,       I          ); // I
-  reg8_ll  T_reg   (clock, (xdst == 4'b0110), XBUS,       T          ); // T
-  reg8_ll  MAR_reg (clock, (xdst == 4'b0100), XBUS,       MAR        ); // MAR
-  reg8_ll  WDR_reg (clock, (xdst == 4'b0101), XBUS,       WDR        ); // WDR
+  reg8_ne  I_reg   (clock, (xdst == 4'b0111), XBUS,       I          ); // I
+  reg8_ne  T_reg   (clock, (xdst == 4'b0110), XBUS,       T          ); // T
+  reg8_ne  MAR_reg (clock, (xdst == 4'b0100), XBUS,       MAR        ); // MAR
+  reg8_ne  WDR_reg (clock, (xdst == 4'b0101), XBUS,       WDR        ); // WDR
   reg8_pe  RDR_reg (clock, (mmrw == 2'b10  ), data_in,    RDR        ); // RDR
   reg8_pe  R_reg   (clock, (rwr),             alu_out,    R          ); // R
   reg8_pe  FLG_reg (clock, (fwr), {4'h0, alu_szcy, 1'b0}, FLG        ); // FLG
-  reg8_ll  IPORT_reg(clock, (1'b1),           io_in,      IPORT      );          // IPORT
+  reg8_ne  IPORT_reg(clock, (1'b1),           io_in,      IPORT      );          // IPORT
   reg8_pe  OPORT_reg(clock, (xdst==4'b1000 ), XBUS,       io_out     ); // OPORT
 
 
