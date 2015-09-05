@@ -86,18 +86,10 @@ module CPU_shell(
   // -- debug monitor ---
   // clock level
   assign clocklevel = clock;
-  // convert ressel to resad
-  assign resad = resource_select(ressel);
 
-  function [7:0] resource_select;
-    input sel;
-    begin
-      case (sel)
-        2'b0 : resource_select = 8'h00; // PC
-        2'b1 : resource_select = 8'h01; // I
-      endcase
-    end
-  endfunction
+  // convert ressel to resad
+  assign resad =  (ressel == 1'b0) ? 8'h00 : // PC
+										            		 8'h01 ; // I
 
   //-- CPU core instantiation and bus connection
 

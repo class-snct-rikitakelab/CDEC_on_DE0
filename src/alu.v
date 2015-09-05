@@ -2,14 +2,14 @@
 // {[10]S, [9]Z, [8]Cy, [7:0]result}
 
 module alu(
-	input	wire [7:0] x,
-	input wire [7:0] t,
-	input wire cy,
-	input wire [4:0] alu_op,
-	output wire [2:0] alu_flag,
-	output wire [7:0] alu_result);
+	input	wire 	[7:0] x,
+	input wire 	[7:0]	y,
+	input wire 				cy,
+	input wire 	[4:0]	op,
+	output wire [2:0] flag,
+	output wire [7:0] result);
 
-	assign {alu_flag, alu_result} = ALU(x, t, cy, alu_op);
+	assign {flag, result} = ALU(x, y, cy, op);
 
 	function [10:0] ALU;
 		input [7:0] X;		// XBUS
