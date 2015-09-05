@@ -34,15 +34,11 @@ module cpu_shell_sim;
     forever #2 BUTTON[2] = !BUTTON[2];
   end
   
-  // programming phase
+  // programming -> run
   initial begin
-    reset_N = 1;
-    ressel = 2'b1; // Areg
-    io_in = 8'h03;
-    #3;
-    reset_N = 0;
-    #4;
-    reset_N = 1;
+  // program mode
+
+  // runmode
   end
 endmodule
   
