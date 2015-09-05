@@ -1,11 +1,13 @@
 `default_nettype none
 
 module sseg_dec(
+	input wire				en,
 	input wire [3:0]  data,
 	output wire [7:0] led
 	);
 
-	assign led = ~dec(data);
+	assign led = en ? ~dec(data) : 8'b11111111;
+	//assign led = ~dec(data);
 
 	function [7:0] dec;
 		input [3:0] data_in;

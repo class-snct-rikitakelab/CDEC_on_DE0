@@ -76,10 +76,10 @@ module CPU_shell(
     assign {mode, ressel} = select_sw;
 
     // 
-    sseg_dec sseg3(.data(mode ? prog_adrs[7:4] : 4'h0), .led(ssled3));
-    sseg_dec sseg2(.data(mode ? prog_adrs[3:0] : 4'h0), .led(ssled2));
-    sseg_dec sseg1(.data(mode ? prog_data[7:4] : resdt[7:4]), .led(ssled1));
-    sseg_dec sseg0(.data(mode ? prog_data[3:0] : resdt[3:0]), .led(ssled0));
+    sseg_dec sseg3(.en(1'b1), .data(mode ? prog_adrs[7:4] : 4'h0), .led(ssled3));
+    sseg_dec sseg2(.en(1'b1), .data(mode ? prog_adrs[3:0] : 4'h0), .led(ssled2));
+    sseg_dec sseg1(.en(1'b1), .data(mode ? prog_data[7:4] : resdt[7:4]), .led(ssled1));
+    sseg_dec sseg0(.en(1'b1), .data(mode ? prog_data[3:0] : resdt[3:0]), .led(ssled0));
    
    // memory programmer
    memory_programmer programmer(.clock_in(~p_clock), .reset_N(reset_N),
