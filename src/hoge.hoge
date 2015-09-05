@@ -1,9 +1,3 @@
-/* CPU_shell.v  = = = = = = = = = = = = = = = = = = = = = = = = = = = = *****
- **    CDEC8 and test bench / FPGA interface module          ****
- ***       Ver. 1.0 2014.05.30                        ***
- ****                                      **
- ***** (C) 2014 kimsyn (ET & VLSI system design labo. GCT ICE)  = = = = = = */
-
 module CPU_shell(
   input wire  [2:0] BUTTON,// push buttons: {clock, reset_N, p_clock}
   input wire  [9:0] SW,// slide switches: {mode, select_sw, io_in}
