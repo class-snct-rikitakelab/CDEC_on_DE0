@@ -14,7 +14,7 @@ module memory_programmer(
 
   reg [7:0] address_counter;
 
-  assign clock_out = clock_in;
+  assign clock_out = ~clock_in;
   assign wr_en_out = reset_N;
   assign address_out = address_counter;
   assign data_out = data_in;

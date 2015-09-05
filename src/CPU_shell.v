@@ -73,13 +73,13 @@ module CPU_shell(
   assign {mode, ressel} = select_sw;
 
   // 
-  sseg_dec  sseg3(.en(1'b1), .data(mode ? prog_adrs[7:4] : 4'h0), .led(ssled3));
-  sseg_dec  sseg2(.en(1'b1), .data(mode ? prog_adrs[3:0] : 4'h0), .led(ssled2));
+  sseg_dec  sseg3(.en(mode), .data(mode ? prog_adrs[7:4] : 4'h0), .led(ssled3));
+  sseg_dec  sseg2(.en(mode), .data(mode ? prog_adrs[3:0] : 4'h0), .led(ssled2));
   sseg_dec  sseg1(.en(1'b1), .data(mode ? prog_data[7:4] : resdt[7:4]), .led(ssled1));
   sseg_dec  sseg0(.en(1'b1), .data(mode ? prog_data[3:0] : resdt[3:0]), .led(ssled0));
 
   // memory programmer
-  memory_programmer programmer(.clock_in(~p_clock), .reset_N(reset_N),
+  memory_programmer programmer(.clock_in(p_clock), .reset_N(reset_N),
     .data_in(io_in), .clock_out(prog_clock), .wr_en_out(prog_wr_en),
     .address_out(prog_adrs), .data_out(prog_data));
 
@@ -115,4 +115,3 @@ module CPU_shell(
     .wr_en(mode ? prog_wr_en : mmwr_en));
 
 endmodule
->>>>>>> llreg_to_negedgereg
