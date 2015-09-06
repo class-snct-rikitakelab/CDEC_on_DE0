@@ -88,17 +88,17 @@ module CPU_shell(
 
   assign sseg3_data = (mode == 0) ? 4'h0 : pr_adrs[7:4];
   assign sseg2_data = (mode == 0) ? 4'h0 : pr_adrs[3:0];
-  assign sseg1_data = (mode == 0) ? resdt[7:4]  :
-                      (sel  == 0) ? data[7:4]   :
-                                    pr_code[7:4];
-  assign sseg0_data = (mode == 0) ? resdt[3:0]  :
-                      (sel  == 0) ? data[3:0]   :
-                                    pr_code[3:0];
+  assign sseg1_data = (mode == 0) ? resdt[7:4]    :
+                      (sel  == 0) ? data[7:4]     :
+                                    pr_code[7:4]  ;
+  assign sseg0_data = (mode == 0) ? resdt[3:0]    :
+                      (sel  == 0) ? data[3:0]     :
+                                    pr_code[3:0]  ;
 
-  sseg_dec  sseg3(.en(mode), .dp(mode & sel), .data(sseg3_data), .led(ssled3));
+  sseg_dec  sseg3(.en(mode), .dp(1'b0)      , .data(sseg3_data), .led(ssled3));
   sseg_dec  sseg2(.en(mode), .dp(mode & sel), .data(sseg2_data), .led(ssled2));
-  sseg_dec  sseg1(.en(1'b1), .dp(mode & sel), .data(sseg1_data), .led(ssled1));
-  sseg_dec  sseg0(.en(1'b1), .dp(mode & sel), .data(sseg0_data), .led(ssled0));
+  sseg_dec  sseg1(.en(1'b1), .dp(1'b0)      , .data(sseg1_data), .led(ssled1));
+  sseg_dec  sseg0(.en(1'b1), .dp(1'b0)      , .data(sseg0_data), .led(ssled0));
 
   // memory programmer
   memory_programmer programmer(
