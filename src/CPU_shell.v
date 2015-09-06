@@ -95,10 +95,10 @@ module CPU_shell(
                       (sel  == 0) ? data[3:0]   :
                                     pr_code[3:0];
 
-  sseg_dec  sseg3(.en(mode), .data(sseg3_data), .led(ssled3));
-  sseg_dec  sseg2(.en(mode), .data(sseg2_data), .led(ssled2));
-  sseg_dec  sseg1(.en(1'b1), .data(sseg1_data), .led(ssled1));
-  sseg_dec  sseg0(.en(1'b1), .data(sseg0_data), .led(ssled0));
+  sseg_dec  sseg3(.en(mode), .dp(mode & sel), .data(sseg3_data), .led(ssled3));
+  sseg_dec  sseg2(.en(mode), .dp(mode & sel), .data(sseg2_data), .led(ssled2));
+  sseg_dec  sseg1(.en(1'b1), .dp(mode & sel), .data(sseg1_data), .led(ssled1));
+  sseg_dec  sseg0(.en(1'b1), .dp(mode & sel), .data(sseg0_data), .led(ssled0));
 
   // memory programmer
   memory_programmer programmer(
