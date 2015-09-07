@@ -17,7 +17,7 @@ module CDEC8(
     output wire [7:0] adrs,
     input  wire [7:0] data_in,
     output wire [7:0] data_out,
-    output wire      mmwr_en,
+    output wire       mmwr_en,
 
     output wire endseq,
     input  wire [7:0] resad,

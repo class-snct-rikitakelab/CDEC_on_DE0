@@ -98,7 +98,7 @@ module CPU_shell(
   sseg_dec  sseg3(.en(mode), .dp(1'b0)      , .data(sseg3_data), .led(ssled3));
   sseg_dec  sseg2(.en(mode), .dp(mode & sel), .data(sseg2_data), .led(ssled2));
   sseg_dec  sseg1(.en(1'b1), .dp(1'b0)      , .data(sseg1_data), .led(ssled1));
-  sseg_dec  sseg0(.en(1'b1), .dp(1'b0)      , .data(sseg0_data), .led(ssled0));
+  sseg_dec  sseg0(.en(1'b1), .dp(mode & sel), .data(sseg0_data), .led(ssled0));
 
   // memory programmer
   memory_programmer programmer(
@@ -125,10 +125,19 @@ module CPU_shell(
 
   //-- CPU core instantiation and bus connection
 
-  CDEC8 CDEC8( clock, reset_N,
-    io_in, io_out,
-    adrs[7:0], data_in[7:0], data_out[7:0], mm_wr_en,
-    endseq, resad, resdt);
+  CDEC8 CDEC8( 
+    .clock(clock),
+    .reset_N(reset_N),
+    .io_in(io_in), 
+    .io_out(io_out),
+    .adrs(adrs),
+    .data_in(data_in),
+    .data_out(data_out),
+    .mmwr_en(mm_wr_en),
+    .endseq(endseq),
+    .resad(resad),
+    .resdt(resdt)
+  );
 
   //-- memory/io signal connection
   memory ram(
