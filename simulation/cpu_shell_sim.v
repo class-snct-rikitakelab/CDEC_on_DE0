@@ -39,8 +39,8 @@ module cpu_shell_sim;
 
   // clock generator
   initial begin
-    BUTTON[2] = 0;
-    forever #2 BUTTON[2] = !BUTTON[2];
+    clock = 0;
+    forever #2 clock = !clock;
   end
   
   // programming -> run

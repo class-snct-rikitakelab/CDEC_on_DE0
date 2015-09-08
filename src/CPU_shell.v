@@ -20,10 +20,8 @@ module CPU_shell(
 
   wire clock;   // clock
   wire reset_N; // reset (active low)
-  wire p_clock; // clock signal for programming
+  wire prog_clock; // clock signal of memory programming
 
-  wire [1:0]  select_sw;  // resource selector for debug monitor
-  wire [7:0]  io_in;      // INPUT PORT (8-bit SW)
 
   wire clocklevel;        // clock level
   wire endseq;            // end seqence    
@@ -34,11 +32,26 @@ module CPU_shell(
   wire [7:0] ssled1;
   wire [7:0] ssled0;
 
-  assign clock    = BUTTON[2];
-  assign reset_N  = BUTTON[1];
-  assign p_clock  = BUTTON[0];
+  // program/run mode selector
+  // mode == 1 => program mode
+  // mode == 0 => run mode
+  wire  mode;
 
-  assign {select_sw, io_in} = SW;
+  // sel
+  // Given mode == 1
+  //  sel == 1/0 : program write/read
+  // Given mode == 0
+  //  sel == 1/0 : debug resource I/PC
+  wire sel;
+
+  wire [7:0]  io_in;      // INPUT PORT (8-bit SW)
+
+
+  assign clock      = BUTTON[2];
+  assign reset_N    = BUTTON[1];
+  assign prog_clock = BUTTON[0];
+
+  assign {mode, sel, io_in} = SW;
 
   assign LEDG = {clocklevel, endseq, io_out};
 
@@ -47,63 +60,91 @@ module CPU_shell(
   assign {HEX2_DP, HEX2_D} = ssled2;
   assign {HEX3_DP, HEX3_D} = ssled3;
 
-  // program/run mode selector
-  // mode == 1 => program mode
-  // mode == 0 => run mode
-  wire  mode;
 
   // memory_programmer -> memory
-  wire [7:0]  prog_adrs;
-  wire [7:0]  prog_data;
-  wire        prog_clock;
-  wire        prog_wr_en;
+  wire [7:0]  pr_adrs;
+  wire [7:0]  pr_code;
+  wire        pr_clock;
+  wire        pr_wr_en;
+  // memory_programmer -> 7segs
+  wire [7:0]  data;
 
   // CDEC8 <-> memory
   wire [7:0]  data_in;
   wire [7:0]  data_out;
   wire [7:0]  adrs;
-  wire        mmwr_en;
+  wire        mm_wr_en;
 
   // debug
   wire        ressel;
   wire [7:0]  resad;
   wire [7:0]  resdt;
 
-  //
-  assign {mode, ressel} = select_sw;
+  // 7seg
+  wire [7:0]  sseg3_data;
+  wire [7:0]  sseg2_data;
+  wire [7:0]  sseg1_data;
+  wire [7:0]  sseg0_data;
 
-  // 
-  sseg_dec  sseg3(.en(mode), .data(mode ? prog_adrs[7:4] : 4'h0), .led(ssled3));
-  sseg_dec  sseg2(.en(mode), .data(mode ? prog_adrs[3:0] : 4'h0), .led(ssled2));
-  sseg_dec  sseg1(.en(1'b1), .data(mode ? prog_data[7:4] : resdt[7:4]), .led(ssled1));
-  sseg_dec  sseg0(.en(1'b1), .data(mode ? prog_data[3:0] : resdt[3:0]), .led(ssled0));
+  assign sseg3_data = (mode == 0) ? 4'h0 : pr_adrs[7:4];
+  assign sseg2_data = (mode == 0) ? 4'h0 : pr_adrs[3:0];
+  assign sseg1_data = (mode == 0) ? resdt[7:4]    :
+                      (sel  == 0) ? data[7:4]     :
+                                    pr_code[7:4]  ;
+  assign sseg0_data = (mode == 0) ? resdt[3:0]    :
+                      (sel  == 0) ? data[3:0]     :
+                                    pr_code[3:0]  ;
+
+  sseg_dec  sseg3(.en(mode), .dp(1'b0)      , .data(sseg3_data), .led(ssled3));
+  sseg_dec  sseg2(.en(mode), .dp(mode & sel), .data(sseg2_data), .led(ssled2));
+  sseg_dec  sseg1(.en(1'b1), .dp(1'b0)      , .data(sseg1_data), .led(ssled1));
+  sseg_dec  sseg0(.en(1'b1), .dp(mode & sel), .data(sseg0_data), .led(ssled0));
 
   // memory programmer
-  memory_programmer programmer(.clock_in(p_clock), .reset_N(reset_N),
-    .data_in(io_in), .clock_out(prog_clock), .wr_en_out(prog_wr_en),
-    .address_out(prog_adrs), .data_out(prog_data));
+  memory_programmer programmer(
+    .reset_N(reset_N),
+    .prog_clock(prog_clock),
+    .prog_wr_en(sel),
+    .prog_code(io_in),
+    .data(data),
+
+    .pr_clock(pr_clock),
+    .pr_wr_en(pr_wr_en),
+    .pr_adrs(pr_adrs),
+    .pr_code(pr_code),
+    .mm_data(data_in)
+    );
 
   // -- debug monitor ---
   // clock level
   assign clocklevel = clock;
 
   // convert ressel to resad
-  assign resad =  (ressel == 1'b0) ? 8'h00 : // PC
-										            		 8'h01 ; // I
+  assign resad =  (sel == 1'b0) ? 8'h00 : // PC
+										            	8'h01 ; // I
 
   //-- CPU core instantiation and bus connection
 
-  CDEC8 CDEC8( clock, reset_N,
-    io_in, io_out,
-    adrs[7:0], data_in[7:0], data_out[7:0], mmwr_en,
-    endseq, resad, resdt);
+  CDEC8 CDEC8( 
+    .clock(clock),
+    .reset_N(reset_N),
+    .io_in(io_in), 
+    .io_out(io_out),
+    .adrs(adrs),
+    .data_in(data_in),
+    .data_out(data_out),
+    .mmwr_en(mm_wr_en),
+    .endseq(endseq),
+    .resad(resad),
+    .resdt(resdt)
+  );
 
   //-- memory/io signal connection
   memory ram(
-    .adrs(mode ? prog_adrs : adrs), 
-    .data(mode ? prog_data : data_out), 
+    .adrs(mode ? pr_adrs : adrs), 
+    .data(mode ? pr_code : data_out), 
     .q(data_in), 
-    .clock(mode ? prog_clock : clock),
-    .wr_en(mode ? prog_wr_en : mmwr_en));
+    .clock(mode ? pr_clock : clock),
+    .wr_en(mode ? pr_wr_en : mm_wr_en));
 
 endmodule
