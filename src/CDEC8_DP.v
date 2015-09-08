@@ -64,8 +64,9 @@ module CDEC8_DP (
                 (xsrc == 4'b0100) ? R     :
                 (xsrc == 4'b0101) ? RDR   :
                 (xsrc == 4'b0110) ? FLG   :
+                (xsrc == 4'b0111) ? 8'hff :
                 (xsrc == 4'b1000) ? IPORT :
-                                    8'hff ;
+                                    8'hff ; //pullup
 
   //-- register instantiation
   reg8_per PC_reg  (clock, (xdst == 4'b0000), XBUS,       PC, reset_N); // PC
