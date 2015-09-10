@@ -80,7 +80,7 @@ module CDEC8_DP (
   reg8_pe  RDR_reg (clock, (mmrw == 2'b10  ), data_in,    RDR        ); // RDR
   reg8_pe  R_reg   (clock, (rwr),             alu_out,    R          ); // R
   reg8_pe  FLG_reg (clock, (fwr), {4'h0, alu_szcy, 1'b0}, FLG        ); // FLG
-  reg8_ne  IPORT_reg(clock, (1'b1),           io_in,      IPORT      );          // IPORT
+  reg8_ne  IPORT_reg(clock, (1'b1),           io_in,      IPORT      ); // IPORT
   reg8_pe  OPORT_reg(clock, (xdst==4'b1000 ), XBUS,       io_out     ); // OPORT
 
 
