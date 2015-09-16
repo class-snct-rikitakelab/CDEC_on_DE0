@@ -1,11 +1,11 @@
-    /* CDEC_DP.v  = = = = = = = = = = = = = = = = = = = = = = = = = = = = = *****
+/* CDEC_DP.v  = = = = = = = = = = = = = = = = = = = = = = = = = = = = = *****
  **    CDEC data path part FPGA version          ****
  ***       Ver. 1.0  2014.05.29             ***
  ****                    **
  ***** (C) 2014 kimsyn (ET & VLSI system design labo. GCT ICE)  = = = = = = */
 
 `default_nettype none
-`include "my_const.vh"
+`include "./my_const.vh"
 
 module CDEC8_DP (
   input  wire        clock,

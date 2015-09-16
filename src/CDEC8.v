@@ -5,7 +5,7 @@
  ***** (C) 2014 kimsyn (ET & VLSI system design labo. GCT ICE)  = = = = = = */
 
 `default_nettype none
-`include "my_const.vh"
+`include "./my_const.vh"
 
 module CDEC8(
     input wire        clock,
