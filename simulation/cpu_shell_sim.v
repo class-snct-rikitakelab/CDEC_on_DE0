@@ -234,7 +234,7 @@ module cpu_shell_sim;
     mode = 1'b0;
     #10
     reset_N = 1'b0;
-    #4;
+    #6;
     reset_N = 1'b1;
     #2;
 
