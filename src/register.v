@@ -3,7 +3,7 @@
  ***       Ver. 1.0  2014.05.09						  ***
  ****									   **
  ***** (C) 2014 kimsyn (ET & VLSI system design labo. GCT ICE)  = = = = = = */
- 
+
 `default_nettype none
 
 //--------------------------------------------------------------------
@@ -65,10 +65,11 @@ endmodule
 
 module reg8_ner(
     input wire           clock,
-    input wire           reset_N,
     input wire           wr_en,
     input wire     [7:0] in,
-    output reg [7:0] out);
+    output reg [7:0] out,
+    input wire           reset_N
+);
 
     always @(negedge clock or negedge reset_N) begin
 	if(~reset_N) begin

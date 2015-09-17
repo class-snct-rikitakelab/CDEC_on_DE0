@@ -12,7 +12,7 @@ module CDEC8_DP (
   input  wire        reset_N,
 
   // io port
-  input  wire [7:0] io_in,  // input port 
+  input  wire [7:0] io_in,  // input port
   output wire [7:0] io_out, // output port
 
   // memory
@@ -51,7 +51,7 @@ module CDEC8_DP (
   //-- ALU/FLAG connection
   alu alu(.x(XBUS), .y(T), .cy(FLG[1]), .op(aluop), .flag(alu_szcy), .result(alu_out));
   assign SZCy = FLG[3:1];
- 
+
   //-- memory bus
   assign adrs     = MAR;
   assign data_out = WDR;
@@ -69,20 +69,33 @@ module CDEC8_DP (
                                     8'hff ; //pullup
 
   //-- register instantiation
-  reg8_per PC_reg  (clock, (xdst == 4'b0000), XBUS,       PC, reset_N); // PC
-  reg8_pe  A_reg   (clock, (xdst == 4'b0001), XBUS,       A          ); // A
-  reg8_pe  B_reg   (clock, (xdst == 4'b0010), XBUS,       B          ); // B
-  reg8_pe  C_reg   (clock, (xdst == 4'b0011), XBUS,       C          ); // C
-  reg8_ne  I_reg   (clock, (xdst == 4'b0111), XBUS,       I          ); // I
-  reg8_ne  T_reg   (clock, (xdst == 4'b0110), XBUS,       T          ); // T
-  reg8_ne  MAR_reg (clock, (xdst == 4'b0100), XBUS,       MAR        ); // MAR
-  reg8_ne  WDR_reg (clock, (xdst == 4'b0101), XBUS,       WDR        ); // WDR
-  reg8_pe  RDR_reg (clock, (mmrw == 2'b10  ), data_in,    RDR        ); // RDR
-  reg8_pe  R_reg   (clock, (rwr),             alu_out,    R          ); // R
-  reg8_pe  FLG_reg (clock, (fwr), {4'h0, alu_szcy, 1'b0}, FLG        ); // FLG
-  reg8_ne  IPORT_reg(clock, (1'b1),           io_in,      IPORT      ); // IPORT
-  reg8_pe  OPORT_reg(clock, (xdst==4'b1000 ), XBUS,       io_out     ); // OPORT
-
+  reg8_per PC_reg (.clock(clock),
+    .wr_en(xdst == 4'b0000), .in(XBUS), .out(PC),
+    .reset_N(reset_N)); // PC
+  reg8_pe  A_reg  (.clock(clock),
+    .wr_en(xdst == 4'b0001), .in(XBUS), .out(A)); // A
+  reg8_pe  B_reg  (.clock(clock),
+    .wr_en(xdst == 4'b0010), .in(XBUS), .out(B)); // B
+  reg8_pe  C_reg  (.clock(clock),
+    .wr_en(xdst == 4'b0011), .in(XBUS), .out(C)); // C
+  reg8_ne  I_reg  (.clock(clock),
+    .wr_en(xdst == 4'b0111), .in(XBUS), .out(I)); // I
+  reg8_ne  T_reg  (.clock(clock),
+    .wr_en(xdst == 4'b0110), .in(XBUS), .out(T)); // T
+  reg8_ne  MAR_reg (.clock(clock),
+    .wr_en(xdst == 4'b0100), .in(XBUS), .out(MAR)); // MAR
+  reg8_ne  WDR_reg (.clock(clock),
+    .wr_en(xdst == 4'b0101), .in(XBUS), .out(WDR)); // WDR
+  reg8_pe  RDR_reg (.clock(clock),
+    .wr_en(mmrw == 2'b10),   .in(data_in), .out(RDR)); // RDR
+  reg8_pe  R_reg   (.clock(clock),
+    .wr_en(rwr),  .in(alu_out), .out(R)); // R
+  reg8_pe  FLG_reg (.clock(clock),
+    .wr_en(fwr),  .in({4'h0, alu_szcy, 1'b0}), .out(FLG)); // FLG
+  reg8_ne  IPORT_reg(.clock(clock),
+    .wr_en(1'b1), .in(io_in), .out(IPORT)); // IPORT
+  reg8_pe  OPORT_reg(.clock(clock),
+    .wr_en(xdst == 4'b1000), .in(XBUS), .out(io_out)); // OPORT
 
   //-- internal hardware resource singnal observation bus for debug monitor
   assign resdt = (resad == 8'h00) ? PC      : 8'hZZ;
