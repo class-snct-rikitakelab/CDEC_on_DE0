@@ -1,0 +1,15 @@
+        ORG 0x00        |adrs| code
+        LD DATA, A      | 00 | 81 10
+        MOV A, B        | 02 | 06
+        DEC B           | 03 | 46
+LOOP    JZ LPEND        | 04 | DA 0A
+        ADD B           | 06 | 22
+        DEC B           | 07 | 46
+        JMP LOOP        | 08 | C0 04
+LPEND   OUT             | 0A | 04
+        ST A, RSLT      | 0B | A4 11
+END     JMP END         | 0D | C0 0D
+        ORG 0x10        |    |
+DATA    DB 0x05         | 10 | 05
+RSLT    0B 0x00         | 11 | 00
+
