@@ -14,7 +14,7 @@
 
 `default_nettype none
 
-module CDEC8_PLA_ctrl(
+module CDEC8_ctrl(
   input  wire	       clock,
   input  wire	       reset_N,
   input  wire [ 7:0] I,

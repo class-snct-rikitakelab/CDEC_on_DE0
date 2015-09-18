@@ -22,7 +22,7 @@ module CDEC8(
     output wire endseq,
     input  wire [7:0] resad,
     output wire [7:0] resdt);
-	 
+
     wire [ 2:0] SZCy;
     wire [ 7:0] I;
     wire [16:0] ctrl;
@@ -30,14 +30,14 @@ module CDEC8(
     wire   [ 1:0] mmrw;
 
 
-    CDEC8_DP CDEC8_DP ( 
+    CDEC8_DP CDEC8_DP (
         clock, reset_N,
         io_in, io_out,
         adrs, data_in, data_out,
         I, SZCy, ctrl,
         resad, resdt);
 
-    CDEC8_PLA_ctrl CDEC8_PLA_ctrl (
+    CDEC8_ctrl CDEC8_ctrl (
         clock, reset_N,
         I, SZCy, ctrl,
         endseq,
