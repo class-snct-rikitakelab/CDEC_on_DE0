@@ -92,7 +92,7 @@ module CDEC8_DP (
     .wr_en(rwr),  .in(alu_out), .out(R)); // R
   reg8_ne  FLG_reg (.clock(clock),
     .wr_en(fwr),  .in({4'h0, alu_szcy, 1'b0}), .out(FLG)); // FLG
-  reg8_ne  IPORT_reg(.clock(clock),
+  reg8_pe  IPORT_reg(.clock(clock),
     .wr_en(1'b1), .in(io_in), .out(IPORT)); // IPORT
   reg8_ne  OPORT_reg(.clock(clock),
     .wr_en(xdst == 4'b1000), .in(XBUS), .out(io_out)); // OPORT
