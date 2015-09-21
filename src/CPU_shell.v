@@ -24,7 +24,7 @@ module CPU_shell(
 
 
   wire clocklevel;        // clock level
-  wire endseq;            // end seqence    
+  wire endseq;            // end seqence
   wire [7:0] io_out;      // OUTPUT PORT (8-bit LED)
 
   wire [7:0] ssled3;
@@ -125,10 +125,10 @@ module CPU_shell(
 
   //-- CPU core instantiation and bus connection
 
-  CDEC8 CDEC8( 
+  CDEC8 CDEC8(
     .clock(clock),
     .reset_N(reset_N),
-    .io_in(io_in), 
+    .io_in(io_in),
     .io_out(io_out),
     .adrs(adrs),
     .data_in(data_in),
@@ -141,9 +141,9 @@ module CPU_shell(
 
   //-- memory/io signal connection
   memory ram(
-    .adrs(mode ? pr_adrs : adrs), 
-    .data(mode ? pr_code : data_out), 
-    .q(data_in), 
+    .adrs(mode ? pr_adrs : adrs),
+    .data(mode ? pr_code : data_out),
+    .q(data_in),
     .clock(mode ? pr_clock : clock),
     .wr_en(mode ? pr_wr_en : mm_wr_en));
 

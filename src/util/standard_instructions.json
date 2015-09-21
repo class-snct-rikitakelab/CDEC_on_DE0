@@ -1,0 +1,58 @@
+[
+  {
+    "mnemonic"  : "instruction fetch",
+    "ctrl_seq"  : [
+      { "state" : 0, "code" : "XXXXXXXX", "flag" : "XXX",
+        "src" : "PC", "dst" : "MAR", "alu" : "INC", "rwr" : "RWR", "fwr" : nil, "mm" : nil, "end" : nil},
+      { "state" : 1, "code" : "XXXXXXXX", "flag" : "XXX",
+        "src" : "PC", "dst" : "MAR", "alu" : "INC", "rwr" : "RWR", "fwr" : nil, "mm" : nil, "end" : nil},
+      { "state" : 2, "code" : "XXXXXXXX", "flag" : "XXX",
+        "src" : "PC", "dst" : "MAR", "alu" : "INC", "rwr" : "RWR", "fwr" : nil, "mm" : nil, "end" : nil}
+    ]
+  },
+
+  {
+    "mnemonic"  : "MOV sreg, dreg",
+    "ctrl_seq"  : [
+      { "state" : 3, "code" : "00000101", "flag" : "XXX",
+        "src" : "A", "dst" : "A", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00000110", "flag" : "XXX",
+        "src" : "A", "dst" : "B", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00000111", "flag" : "XXX",
+        "src" : "A", "dst" : "C", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00001001", "flag" : "XXX",
+        "src" : "B", "dst" : "A", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00001010", "flag" : "XXX",
+        "src" : "B", "dst" : "B", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00001011", "flag" : "XXX",
+        "src" : "B", "dst" : "C", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00001101", "flag" : "XXX",
+        "src" : "C", "dst" : "A", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00001110", "flag" : "XXX",
+        "src" : "C", "dst" : "B", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 3, "code" : "00001111", "flag" : "XXX",
+        "src" : "C", "dst" : "C", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"}
+    ]
+  },
+
+  {
+    "mnemonic"  : "LD adrs8, dreg",
+    "ctrl_seq"  : [
+      { "state" : 3, "code" : "100000XX", "flag" : "XXX",
+        "src" : "PC", "dst" : "MAR", "alu" : "INC", "rwr" : "RWR", "fwr" : nil, "mm" : "MRD", "end" : nil},
+      { "state" : 4, "code" : "100000XX", "flag" : "XXX",
+        "src" : "R", "dst" : "PC", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : "MRD", "end" : nil},
+      { "state" : 5, "code" : "100000XX", "flag" : "XXX",
+        "src" : "RDR", "dst" : "MAR", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : nil},
+      { "state" : 6, "code" : "100000XX", "flag" : "XXX",
+        "src" : nil, "dst" : nil, "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : "MRD", "end" : nil},
+      { "state" : 7, "code" : "10000001", "flag" : "XXX",
+        "src" : "RDR", "dst" : "A", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 7, "code" : "10000010", "flag" : "XXX",
+        "src" : "RDR", "dst" : "B", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+      { "state" : 7, "code" : "10000011", "flag" : "XXX",
+        "src" : "RDR", "dst" : "C", "alu" : nil, "rwr" : nil, "fwr" : nil, "mm" : nil, "end" : "END"},
+    ]
+  },
+
+]
