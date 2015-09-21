@@ -15,7 +15,9 @@ module CPU_shell(
   output wire [6:0] HEX2_D,// 7seg digit 2
   output wire       HEX2_DP,// 7seg dp 2
   output wire [6:0] HEX3_D,// 7seg digit 3
-  output wire       HEX3_DP// 7seg dp 3
+  output wire       HEX3_DP,// 7seg dp 3
+  //
+  input wire        CLOCK_50 //
   );
 
   wire clock;   // clock
@@ -46,8 +48,9 @@ module CPU_shell(
 
   wire [7:0]  io_in;      // INPUT PORT (8-bit SW)
 
-
-  assign clock      = BUTTON[2];
+  //
+  wire clock_manual;
+  assign clock_manual = BUTTON[2];
   assign reset_N    = BUTTON[1];
   assign prog_clock = BUTTON[0];
 
@@ -60,6 +63,12 @@ module CPU_shell(
   assign {HEX2_DP, HEX2_D} = ssled2;
   assign {HEX3_DP, HEX3_D} = ssled3;
 
+
+  // nanual clock or 5Hz clock
+  wire clock_5Hz;
+  clock_5Hz_generator clock_generator(
+    .input_clock(CLOCK_50), .output_clock(clock_5Hz));
+  assign clock = (sel == 1'b1) ? clock_5Hz : clock_manual;
 
   // memory_programmer -> memory
   wire [7:0]  pr_adrs;
@@ -120,8 +129,9 @@ module CPU_shell(
   assign clocklevel = clock;
 
   // convert ressel to resad
-  assign resad =  (sel == 1'b0) ? 8'h00 : // PC
-										            	8'h01 ; // I
+  // assign resad =  (sel == 1'b0) ? 8'h00 : // PC
+  //                                 8'h01 ; // I
+  assign resad = 8'h01; // I
 
   //-- CPU core instantiation and bus connection
 
