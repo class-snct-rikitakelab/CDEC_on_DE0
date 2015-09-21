@@ -81,10 +81,10 @@ module CPU_shell(
   wire [7:0]  resdt;
 
   // 7seg
-  wire [7:0]  sseg3_data;
-  wire [7:0]  sseg2_data;
-  wire [7:0]  sseg1_data;
-  wire [7:0]  sseg0_data;
+  wire [3:0]  sseg3_data;
+  wire [3:0]  sseg2_data;
+  wire [3:0]  sseg1_data;
+  wire [3:0]  sseg0_data;
 
   assign sseg3_data = (mode == 0) ? 4'h0 : pr_adrs[7:4];
   assign sseg2_data = (mode == 0) ? 4'h0 : pr_adrs[3:0];
